@@ -14,18 +14,17 @@ You are given bhp.csv which contains property prices in the city of banglore, In
 
     (ii) Using IQR, detect height outliers and print them
 
-AIM:
+Aim:
 TO detect and remove the outliers in the given data set and save the final data.
 
 Algorithm:
-
 Step 1:
 Import the required packages(pandas,numpy,scipy)
 
 Step 2:
 Read the given csv file
 
-Step 3:
+Step3:
 Convert the file into a dataframe and get information of the data.
 
 Step 4:
@@ -44,6 +43,7 @@ Step 8:
 Save the final data set into the file.
 
 Program:
+(1) & (2) Examine price_per_sqft column and use IQR to remove outliers and create new dataframe.
 
 (1) Examine price_per_sqft column and use IQR to remove outliers and create new dataframe
 ```
@@ -51,129 +51,158 @@ Developed by :Adhithya Perumal.D
 Reg.No: 212222230007
 
 import pandas as pd
+import numpy as np
 import seaborn as sns
 df = pd.read_csv("/content/bhp.csv")
 df
-sns.boxplot(data=df)
+df.head()
+df.describe()
+df.info()
+df.isnull().sum()
+df.shape
 sns.boxplot(x="price_per_sqft",data=df)
-q1 = df['price_per_sqft'].quantile(0.35)
-q3 = df['price_per_sqft'].quantile(0.65)
+q1 = df['price_per_sqft'].quantile(0.25)
+q3 = df['price_per_sqft'].quantile(0.75)
 print("First Quantile =",q1,"\nSecond Quantile =",q3)
 IQR = q3-q1
-high = q3+1.5*IQR
-low = q1-1.5*IQR
-df1 =df[((df['price_per_sqft']>=low)&(df['price_per_sqft']<=high))]
+ul = q3+1.5*IQR
+ll = q1-1.5*IQR
+df1 =df[((df['price_per_sqft']>=ll)&(df['price_per_sqft']<=ul))]
 df1
-sns.boxplot(x="price_per_sqft",data=df1)
 df1.shape
+sns.boxplot(x="price_per_sqft",data=df1)
 ```
 
-(1) & (2) Examine price_per_sqft column and use zscore of 3 to remove outliers.
+(3)Examine price_per_sqft column and use zscore of 3 to remove outliers.
 ```
 from scipy import stats
-import numpy as np
 z = np.abs(stats.zscore(df['price_per_sqft']))
 df2 = df[(z<3)]
 df2
-df2.shape
+print(df2.shape)
 sns.boxplot(x="price_per_sqft",data=df2)
 ```
 
-(4) (i)For the data set height_weight.csv detect weight outliers using IQR method
+(4)(i) For the data set height_weight.csv detect weight outliers using IQR method.
 ```
-df3 = pd.read_csv("/content/height_weight.csv")
-df3
-sns.boxplot(x="weight",data=df3)
-q1 = df3["weight"].quantile(0.25)
-q3 = df3['weight'].quantile(0.75)
-print("First Quantile = ",q1,"\nSecond Quantile = ",q3)
+import pandas as pd
+import numpy as np
+import seaborn as sns
+df = pd.read_csv("/content/height_weight - Sheet1.csv")
+df
+df.head()
+df.info()
+df.describe()
+df.isnull().sum()
+df.shape
+print("First Quantile =",q1,"\nSecond Quantile =",q3)
 IQR = q3-q1
-low = q1-1.5*IQR
-high = q3+1.5*IQR
-df4 =df3[((df3['weight']>=low)&(df3['weight']<=high))]
-df4
-df4.shape
-sns.boxplot(x="weight",data=df4)
+ul = q3+1.5*IQR
+ll = q1-1.5*IQR
+df1 =df[((df['weight']>=ll)&(df['weight']<=ul))]
+df1
+df1.shape
+sns.boxplot(x="weight",data=df1)
 ```
 
 (4)(ii) For the data set height_weight.csv detect height outliers using IQR method.
 ```
-sns.boxplot(x="height",data=df3)
-q1 = df3["height"].quantile(0.25)
-q3 = df3['height'].quantile(0.75)
-print("First Quantile = ",q1,"\nSecond Quantile = ",q3)
+sns.boxplot(x="height",data=df)
+q1 = df['height'].quantile(0.25)
+q3 = df['height'].quantile(0.75)
+print("First Quantile =",q1,"\nSecond Quantile =",q3)
 IQR = q3-q1
-low = q1-1.5*IQR
-high = q3+1.5*IQR
-df5 =df3[((df3['height']>=low)&(df3['height']<=high))]
-df5
-df5.shape
-sns.boxplot(x="height",data=df5)
+ul = q3+1.5*IQR
+ll = q1-1.5*IQR
+df2 =df[((df['height']>=ll)&(df['height']<=ul))]
+df2
+df2.shape
+sns.boxplot(x="height",data=df2)
 ```
 
 OUTPUT:
+(1)(2) Examine price_per_sqft column and use IQR to remove outliers and create new dataframe.
+DATASET:
+![ss](https://user-images.githubusercontent.com/118707079/230837057-239c07d9-8da2-4a49-9d43-6976cb31f091.png)
+![ss2](https://user-images.githubusercontent.com/118707079/230837154-8747c2d7-e775-4d7b-a5fc-10c4d4c10233.png)
 
-DATASET FOR bhp.csv:
+DATASET HEAD:
+![ss3](https://user-images.githubusercontent.com/118707079/230837411-2a9beeec-f438-4b1c-99e5-d9a9227245e8.png)
 
-![dataset](https://user-images.githubusercontent.com/118707079/227997961-7260f594-29ea-4f5f-8ef5-c621656a47bf.png)
+DATASET INFO:
+![ss4](https://user-images.githubusercontent.com/118707079/230837537-2ff984b4-429f-475b-b188-5aecf289e0b0.png)
 
-bhp Boxplot:
+DATASET DESCRIBE:
+![ss5](https://user-images.githubusercontent.com/118707079/230837641-47064d37-2afc-4778-afdc-b9dbbe649c83.png)
 
-![bhp](https://user-images.githubusercontent.com/118707079/227998209-74597706-0dc6-454b-b92f-1173b59fa3cf.png)
+NULL VALUE:
+![ss6](https://user-images.githubusercontent.com/118707079/230837702-d351d7d8-a40b-4d3c-897e-52b79242d67c.png)
 
-DATASET BOXPLOT WITH OUTLIERS(BHP):
+DATASHAPE:
+![ss7](https://user-images.githubusercontent.com/118707079/230837763-a46f4159-fce6-41bd-b139-dec76a11e614.png)
 
-![dataset boxplot](https://user-images.githubusercontent.com/118707079/227998525-5b8baee2-72dc-489a-96ed-b0f28b361b28.png)
+BOX PLOT OF PRICE_PER_SQFT COLUMN WITH OUTLIER:
+![ss8](https://user-images.githubusercontent.com/118707079/230837851-c623d6b1-1cbf-497d-bded-cee6761bbf6a.png)
 
-DATASET WITHOUT OUTLIERS(BHP):
+price_per_sqft - Dataset after removing outliers:
+![ss9](https://user-images.githubusercontent.com/118707079/230838011-80f4b026-fc3e-4c43-b9c8-f3ce31c5c700.png)
 
-![outliers](https://user-images.githubusercontent.com/118707079/227998834-3b8fe8d7-c0a7-4e84-a636-fe2147f22408.png)
+price_per_sqft - Shape of Dataset after removing outliers :
+![ss10](https://user-images.githubusercontent.com/118707079/230838083-e798420c-0f2d-456c-acc2-9d821db9d5f2.png)
 
-DATASET BOXPLOT WITHOUT OUTLIERS(BHP):
+Box Plot of price_per_sqft column without outliers:
+![ss11](https://user-images.githubusercontent.com/118707079/230838138-daaba88d-bdf3-4e88-ab04-33c6571154f1.png)
 
-![6](https://user-images.githubusercontent.com/118707079/227999004-a54c3ba0-be94-4f48-b7f7-42ce19c0aaa3.png)
+Examine price_per_sqft column and use zscore of 3 to remove outliers.
+Dataset after removal of outlier using z score:
+![ss12](https://user-images.githubusercontent.com/118707079/230838233-3dc19cc1-2bd3-46b0-b168-00d0ccc585bd.png)
 
-Shape:
+Shape of Dataset after removal of outlier using z score:
+![ss13](https://user-images.githubusercontent.com/118707079/230838322-2f912809-e210-4246-b1d5-e78fb05688c9.png)
 
-![shape](https://user-images.githubusercontent.com/118707079/227999153-9e6672c5-45ca-407c-91f4-9f5992b8dbc1.png)
+(4) For the data set height_weight.csv detect weight and height outliers using IQR method:
+Dataset:
+![ss14](https://user-images.githubusercontent.com/118707079/230838410-169de914-45b5-456b-8bb6-c4b6859090f1.png)
 
-DATASET AFTER REMOVAL OF OUTLIERS USING Z-SCORE(BHP):
+Dataset Head:
+![ss15](https://user-images.githubusercontent.com/118707079/230838472-37124425-d861-4fbf-9eaa-30fc1798ac08.png)
 
-![after](https://user-images.githubusercontent.com/118707079/227999547-4a8ac64a-5346-4976-a8ea-8f525cefa766.png)
+Dataset Info:
+![ss16](https://user-images.githubusercontent.com/118707079/230838567-95132617-da96-44fd-b77d-4936ca57677c.png)
 
-Shape:
+Dataset describe:
+![ss17](https://user-images.githubusercontent.com/118707079/230838642-c5c748c7-59b9-4270-83bd-830109dec30f.png)
 
-![shp](https://user-images.githubusercontent.com/118707079/227999897-c5254b81-305c-43be-a115-913e1ef60d20.png)
+Nullvalues:
+![ss18](https://user-images.githubusercontent.com/118707079/230838711-bb08c084-b116-48d0-be8e-0151ba056b3f.png)
 
-DATASET BOXPLOT AFTER REMOVAL OF OUTLIERS USING Z-SCORE(BHP):
+Dataset shape:
+![ss19](https://user-images.githubusercontent.com/118707079/230838800-6d7ab5ff-6963-4c3b-9fc2-1b78cde971f1.png)
 
-![z score](https://user-images.githubusercontent.com/118707079/228000012-b149724f-e3ee-4091-b626-0bfa7b09b0d9.png)
+Weight- with outliers:
+![ss20](https://user-images.githubusercontent.com/118707079/230838859-58b141d8-90ba-4f2f-9206-0f03a67e55ea.png)
 
-DATASET FOR WEIGHT_HEIGHT_CSV:
+Weight - Dataset after removing Outliers using IQR method:
+![ss21](https://user-images.githubusercontent.com/118707079/230839062-4a421d22-a880-4260-abfa-99ff9a958a58.png)
 
-![heightweight](https://user-images.githubusercontent.com/118707079/228000218-953d99b9-3de4-49f0-b768-fc228ce25baf.png)
+Weight - Shape of Dataset after removing Outliers using IQR method:
+![ss23](https://user-images.githubusercontent.com/118707079/230839171-733f0f95-c04a-4240-ae5c-8e42d6520ecf.png)
 
-DATASET BOXPLOT WITH OUTLIERS(WEIGHT_HEIGHT):
+Weight - Without Outliers using IQR method:
+![ss22](https://user-images.githubusercontent.com/118707079/230839278-2fe839f2-3099-4709-82ee-bc2387757379.png)
 
-![datas](https://user-images.githubusercontent.com/118707079/228000454-b4d3d67d-89c3-4928-9518-00e063c9c3ab.png)
+Height - With outliers:
+![s24](https://user-images.githubusercontent.com/118707079/230839421-32514a40-a3c2-4516-8685-f3fd6aeb043f.png)
 
-DATASET AFTER REMOVING OUTLIERS USING IQR METHOD(WEIGHT_HEIGHT):
+Height - Dataset after removing Outliers using IQR method:
+![s25](https://user-images.githubusercontent.com/118707079/230839508-e5571ea9-b15c-40fb-98c5-4918405da630.png)
 
-![weight](https://user-images.githubusercontent.com/118707079/228000770-c6eccf91-62ad-4be2-9077-5f5cce45888a.png)
+Height - Shape of Dataset after removing Outliers using IQR method:
+![s26](https://user-images.githubusercontent.com/118707079/230839579-13399d65-ed57-44bc-9f2c-e83e1ec4edb3.png)
 
-DATASET BOXPLOT AFTER REMOVING OUTLIERS USING IQR METHOD(WEIGHT_HEIGHT):
+Height - Without Outliers using IQR method:
+![s277](https://user-images.githubusercontent.com/118707079/230839645-90ffdad3-b61a-4e7d-8551-5625e8b09564.png)
 
-![after data](https://user-images.githubusercontent.com/118707079/228000926-7c51700c-9fb7-4b16-b7c2-542babcf7f8e.png)
-
-FOR HEIGHT COLUMN WITH OUTLIERS:
-
-![hgt](https://user-images.githubusercontent.com/118707079/228001086-16fbba76-bd77-433a-b16e-c52931af5d47.png)
-
-![wgt](https://user-images.githubusercontent.com/118707079/228001332-9592d92b-71cb-4b04-b26b-2135f37b5bec.png)
-
-AFTER REMOVING OUTLIERS BOXPLOT FOR HEIGHT:
-
-![dd](https://user-images.githubusercontent.com/118707079/228001710-ce4f97c5-3594-4e20-b128-4944d1f5d5c9.png)
 
 Result:
 
